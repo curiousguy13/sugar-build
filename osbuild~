@@ -442,7 +442,7 @@ def parse_known_args():
 
 def main():
     # Unbuffered stdout
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
     if os.geteuid() == 0:
         print("osbuild should not be run as root.")
