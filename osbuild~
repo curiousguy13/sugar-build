@@ -162,6 +162,7 @@ def create_virtualenv():
     subprocess.check_call(["python3.3",
                            os.path.join(source_dir, "virtualenv.py"),
                            "-q", "--system-site-packages",
+                           "--python=/usr/bin/python3.3",
                             get_virtualenv_dir()])
 
 

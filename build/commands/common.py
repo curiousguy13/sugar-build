@@ -42,7 +42,7 @@ def get_config_args():
 
 
 def print_close_message():
-    print "Type Shift-Alt-Q inside sugar to close."
+    print("Type Shift-Alt-Q inside sugar to close.")
 
 
 def setup_logging():
