@@ -8,7 +8,7 @@
     {
         "has_checks": true,
         "name": "gwebsockets",
-        "repo": "https://github.com/dnarvaez/gwebsockets.git",
+        "repo": "https://github.com/curiousguy13/gwebsockets.git",
         "clean_stamp": 1
     },
     {
