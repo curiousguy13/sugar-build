@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.3
 # Copyright 2013 Daniel Narvaez
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ import urllib.request, urllib.error, urllib.parse
 import io
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-virtualenv_version = "1.11.4"
+virtualenv_version = "1.11.6"
 broot_dir = "build"
 commands_dir = os.path.join("build", "commands")
 main_repo = "sugarlabs/sugar-build"
@@ -154,14 +154,15 @@ def create_virtualenv():
               "virtualenv/virtualenv-%s.tar.gz" % virtualenv_version
 
         f = urllib.request.urlopen(url)
-        buffer = io.StringIO(f.read())
+        buffer = io.BytesIO(f.read())
         with tarfile.open(fileobj=buffer, mode="r:gz") as tar:
             tar.extractall(get_cache_dir())
 
-    subprocess.check_call(["python2.7",
+    print(get_virtualenv_dir())
+    subprocess.check_call(["python3.3",
                            os.path.join(source_dir, "virtualenv.py"),
                            "-q", "--system-site-packages",
-                           get_virtualenv_dir()])
+                            get_virtualenv_dir()])
 
 
 def install_system_deps():
@@ -176,7 +177,7 @@ def install_system_deps():
         broot_config = json.load(f)
 
     packages = []
-    for group in list(broot_config.get("packages", {}).values()):
+    for group in broot_config.get("packages", {}).values():
         for package in group:
             if package not in packages:
                 packages.append(package)
@@ -233,8 +234,8 @@ def broot_run(args, message_args=None):
     if message_args is None:
         message_args = args
 
-    print(("\n$ sudo broot %s" % " ".join(message_args)))
-
+    print("\n$ sudo broot %s" % " ".join(message_args))
+    print("%poop&")
     return subprocess.call(broot_args) == 0
 
 
@@ -280,7 +281,7 @@ def setup(command):
                         MODE_HOST: "host build system",
                         MODE_BROOT: "broot build system"}
 
-        print(("\n= Setup the %s =\n" % build_system[mode]))
+        print("\n= Setup the %s =\n" % build_system[mode])
 
     if build_virtualenv:
         delete_virtualenv()
@@ -344,8 +345,8 @@ def print_help():
     available_commands.remove("shell")
 
     print("\n= Available commands =\n")
-    print(("\n".join(available_commands)))
-    print(("\nSee also %s" % docs_url))
+    print("\n".join(available_commands))
+    print("\nSee also %s" % docs_url)
 
 
 def get_command_path(command, commands_group):
@@ -360,26 +361,31 @@ def run_command(command, args):
         return broot_run(args)
 
     command_path = get_command_path(command, "host")
+    print('one')
     if command_path is None:
         is_broot_command = True
         command_path = get_command_path(command, "broot")
     else:
         is_broot_command = False
-
+    print('two')
     if get_mode() == MODE_HOST and is_broot_command:
+        print('four')
         broot_args = ["run", "/home/broot/sugar-build/osbuild", command]
         broot_message_args = ["run", "osbuild", command]
 
         if args:
+            print('five')
             broot_args.extend(args)
             broot_message_args.extend(args)
 
+        print('six')
         return broot_run(broot_args, broot_message_args)
+        print('seven')
     else:
-        command_args = [get_bin_path("python2.7"), command_path]
+        command_args = [get_bin_path("python3.3"), command_path]
         if args:
             command_args.extend(args)
-
+        print('three')
         os.environ["PYTHONPATH"] = get_commands_dir()
         os.environ["PATH"] = os.path.expandvars("%s:$PATH" % get_bin_path())
         os.environ["PYTHONUNBUFFERED"] = "yes"
@@ -405,7 +411,7 @@ def check_system_deps():
                 found = True
 
         if not found:
-            print(("Please install %s" % bin_name))
+            print ("Please install %s" % bin_name)
 
         return found
 
@@ -442,7 +448,7 @@ def parse_known_args():
 
 def main():
     # Unbuffered stdout
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
+    #sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
 
     if os.geteuid() == 0:
         print("osbuild should not be run as root.")
@@ -469,9 +475,9 @@ def main():
 
     if get_mode() in (MODE_NONE, MODE_BROOT) and options.command == "shell":
         print_help()
-
+    
     if not run_command(options.command, other_args):
-        print(("\n! Failed to run command %s" % options.command))
+        print("\n! Failed to run command %s" % options.command)
         return False
 
     if options.command == "clean":
