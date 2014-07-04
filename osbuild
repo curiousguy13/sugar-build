@@ -296,7 +296,7 @@ def setup(command):
             if mode == MODE_HOST:
                 packages.append("git+https://github.com/curiousguy13/broot")
             else:
-                packages.append("sourcestamp")
+                packages.append("git+https://github.com/curiousguy13/sourcestamp")
 
             args = [get_bin_path("pip"), "-q", "install"]
             args.extend(packages)
