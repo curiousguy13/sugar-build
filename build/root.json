@@ -121,9 +121,9 @@
         ],
         "sugar-toolkit": [
             "pygtk2-devel",
-            "gnome-python2-gconf",
+            "gnome-python3-gconf",
             "hippo-canvas-python",
-            "gnome-python2-rsvg"
+            "gnome-python3-rsvg"
         ],
         "sugar-toolkit-gtk3": [
             "gtk3-devel",

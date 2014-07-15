@@ -235,7 +235,7 @@ def broot_run(args, message_args=None):
         message_args = args
 
     print("\n$ sudo broot %s" % " ".join(message_args))
-    print("%poop&")
+    print("%poop&",broot_args)
     return subprocess.call(broot_args) == 0
 
 

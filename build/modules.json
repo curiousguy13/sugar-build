@@ -23,11 +23,6 @@
         "clean_stamp": 1
     },
     {
-        "name": "sugar-base",
-        "repo": "https://github.com/sugarlabs/sugar-base.git",
-        "clean_stamp": 1
-    },
-    {
         "dist": true,
         "has_checks": true,
         "name": "sugar-toolkit-gtk3",
