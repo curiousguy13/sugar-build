@@ -146,6 +146,7 @@ def get_bin_path(name=None):
 
 
 def create_virtualenv():
+    print("%poop:osbuild/create_virtualenv")
     source_dir = os.path.join(get_cache_dir(),
                               "virtualenv-%s" % virtualenv_version)
 
@@ -215,6 +216,7 @@ def broot_check_output(args):
 
 
 def broot_run(args, message_args=None):
+    print("%poop:osbuild/broot_run")
     if "XAUTHORITY" not in os.environ:
         os.environ["XAUTHORITY"] = os.path.expanduser("~/.Xauthority")
 
@@ -235,11 +237,12 @@ def broot_run(args, message_args=None):
         message_args = args
 
     print("\n$ sudo broot %s" % " ".join(message_args))
-    print("%poop&",broot_args)
+    print("%poop:osbuild/broot_run: broot_args:",broot_args)
     return subprocess.call(broot_args) == 0
 
 
 def clean():
+    print("%poop:osbuild/clean")
     mode = get_mode()
 
     try:
@@ -271,6 +274,7 @@ def broot_state():
 
 
 def setup(command):
+    print("%poop:osbuild/setup")
     mode = get_mode()
 
     full_pull = command == "pull" and is_full_pull()
@@ -357,30 +361,31 @@ def get_command_path(command, commands_group):
 
 
 def run_command(command, args):
+    print("%poop:osbuild/run_command1")
     if command == "broot":
         return broot_run(args)
 
     command_path = get_command_path(command, "host")
-    print('one')
+    print("%poop:osbuild/run_command2")
     if command_path is None:
         is_broot_command = True
         command_path = get_command_path(command, "broot")
     else:
         is_broot_command = False
-    print('two')
+    print("%poop:osbuild/run_command3")
     if get_mode() == MODE_HOST and is_broot_command:
-        print('four')
+        print("%poop:osbuild/run_command1")
         broot_args = ["run", "/home/broot/sugar-build/osbuild", command]
         broot_message_args = ["run", "osbuild", command]
 
         if args:
-            print('five')
+            print("%poop:osbuild/run_command4")
             broot_args.extend(args)
             broot_message_args.extend(args)
 
-        print('six')
+        print("%poop:osbuild/run_command5")
         return broot_run(broot_args, broot_message_args)
-        print('seven')
+        print("%poop:osbuild/run_command6")
     else:
         command_args = [get_bin_path("python3.3"), command_path]
         if args:
