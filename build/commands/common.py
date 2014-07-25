@@ -7,6 +7,7 @@ build_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 base_dir = os.path.dirname(build_dir)
 home_state_dir = os.path.join(base_dir, "home")
 commands_dir = os.path.join(build_dir, "commands")
+cache_dir=os.path.join(commands_dir, "__pycache__")
 logs_dir = os.path.join(build_dir, "logs")
 root_dir = os.path.dirname(build_dir)
 log_path = os.path.join(logs_dir, "osbuild.log")
@@ -82,6 +83,12 @@ def setup():
 
 
 def run(command):
+    print("%poop:commands/common.py1")
     setup()
-    if not getattr(main, "cmd_%s" % command)():
+    print("%poop:commands/common.py2")
+    getatr = getattr(main, "cmd_%s" % command)()
+    print("%poop:commands/common.py3;getatr=",getatr)
+    if not getatr:
+        print("%poop:commands/common.py4")
         sys.exit(1)
+    print("%poop:commands/common.py5")

@@ -274,9 +274,9 @@ def broot_state():
 
 
 def setup(command):
-    print("%poop:osbuild/setup")
+    print("%poop:osbuild/setup1")
     mode = get_mode()
-
+    print("%poop:osbuild/setup2")
     full_pull = command == "pull" and is_full_pull()
     build_virtualenv = not get_virtualenv_exists() or full_pull
 
@@ -286,7 +286,7 @@ def setup(command):
                         MODE_BROOT: "broot build system"}
 
         print("\n= Setup the %s =\n" % build_system[mode])
-
+    print("%poop:osbuild/setup3")
     if build_virtualenv:
         delete_virtualenv()
 
@@ -308,13 +308,13 @@ def setup(command):
         except Exception as e:
             delete_virtualenv()
             raise e
-
+    print("%poop:osbuild/setup4")
     if full_pull and not is_buildbot():
         print("* Pull latest sugar-build")
 
         os.chdir(get_base_dir())
         subprocess.check_call(["git", "pull", "--ff-only", "-q"])
-
+    print("%poop:osbuild/setup5")
     if full_pull:
         if mode == MODE_NONE:
             install_system_deps()
@@ -322,11 +322,11 @@ def setup(command):
             print("* Setup the build root")
             if not broot_run(["setup"]):
                 return False
-
+    print("%poop:osbuild/setup6")
     # When we run the broot osbuild the virtualenv will be updated
     if get_mode() == MODE_HOST and command == "pull":
         delete_virtualenv(MODE_BROOT)
-
+    print("%poop:osbuild/setup7")
     return True
 
 def get_available_commands():
@@ -387,15 +387,17 @@ def run_command(command, args):
         return broot_run(broot_args, broot_message_args)
         print("%poop:osbuild/run_command6")
     else:
-        command_args = [get_bin_path("python3.3"), command_path]
+        command_args = [get_bin_path("python3.3"), '-u', command_path]
         if args:
             command_args.extend(args)
-        print('three')
+        print("%poop:osbuild/run_command7")
         os.environ["PYTHONPATH"] = get_commands_dir()
         os.environ["PATH"] = os.path.expandvars("%s:$PATH" % get_bin_path())
         os.environ["PYTHONUNBUFFERED"] = "yes"
-
-        return subprocess.call(command_args) == 0
+        print("%poop:osbuild/run_command8:command_args=",command_args)
+        command=subprocess.call(command_args) == 0
+        print("%poop:osbuild/run_command9:command=",command)
+        return command
 
 
 def check_lock():
@@ -480,18 +482,18 @@ def main():
 
     if get_mode() in (MODE_NONE, MODE_BROOT) and options.command == "shell":
         print_help()
-    
+    print("%poop:osbuild/main1")
     if not run_command(options.command, other_args):
         print("\n! Failed to run command %s" % options.command)
         return False
-
+    print("%poop:osbuild/main2")
     if options.command == "clean":
         if options.broot:
             if not broot_run(["clean"]):
                 return False
 
         clean()
-
+    print("%poop:osbuild/main3")
     return True
 
 

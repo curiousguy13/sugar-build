@@ -9,4 +9,4 @@ common.run("clean")
 
 shutil.rmtree(common.logs_dir, ignore_errors=True)
 
-os.unlink(os.path.join(common.commands_dir, "common.pyc"))
+os.unlink(os.path.join(common.cache_dir, "common.cpython-33.pyc"))

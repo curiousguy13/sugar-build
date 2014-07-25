@@ -1,4 +1,6 @@
 #!/usr/bin/env python3.3
-
+print("%poop:commands/broot/build.py1")
 import common
+print("%poop:commands/broot/build.py2")
 common.run("build")
+print("%poop:commands/broot/build.py3")
