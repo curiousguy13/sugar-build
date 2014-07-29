@@ -1,45 +1,28 @@
 [
     {
-        "branch": "sugar-build-v1.13.2",
-        "name": "automake",
-        "repo": "https://github.com/sugarlabs/automake.git",
-        "clean_stamp": 1
-    },
-    {
         "has_checks": true,
         "name": "gwebsockets",
-        "repo": "https://github.com/curiousguy13/gwebsockets.git",
-        "clean_stamp": 1
-    },
-    {
-        "docs_dir": "",
-        "docs_extras": [
-            "addHeader",
-            "noFiles"
-        ],
-        "has_docs": true,
-        "name": "sugar-docs",
-        "repo": "https://github.com/sugarlabs/sugar-docs.git",
+        "repo": "https://github.com/dnarvaez/gwebsockets.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "has_checks": true,
         "name": "sugar-toolkit-gtk3",
-        "repo": "https://github.com/curiousguy13/sugar-toolkit-gtk3.git",
+        "repo": "https://github.com/sugarlabs/sugar-toolkit-gtk3.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "has_checks": true,
         "name": "sugar",
-        "repo": "https://github.com/curiousguy13/sugar.git",
+        "repo": "https://github.com/sugarlabs/sugar.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "name": "sugar-artwork",
-        "repo": "https://github.com/curiousguy13/sugar-artwork.git",
+        "repo": "https://github.com/sugarlabs/sugar-artwork.git",
         "clean_stamp": 1
     },
     {
@@ -54,21 +37,5 @@
         "name": "sugar-runner",
         "repo": "https://github.com/sugarlabs/sugar-runner.git",
         "clean_stamp": 1
-    },
-    {
-        "has_docs": true,
-        "has_checks": true,
-        "name": "sugar-web",
-        "repo": "https://github.com/sugarlabs/sugar-web.git",
-        "clean_stamp": 1
-    },
-    {
-        "name": "sugar-web-test",
-        "repo": "https://github.com/sugarlabs/sugar-web-test.git",
-        "clean_stamp": 1
-    },
-    {
-        "name": "docker",
-        "repo": "https://github.com/sugarlabs/docker.git"
     }
 ]
