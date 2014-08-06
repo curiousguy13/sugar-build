@@ -2,40 +2,40 @@
     {
         "has_checks": true,
         "name": "gwebsockets",
-        "repo": "https://github.com/dnarvaez/gwebsockets.git",
+        "repo": "https://github.com/curiousguy13/gwebsockets.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "has_checks": true,
         "name": "sugar-toolkit-gtk3",
-        "repo": "https://github.com/sugarlabs/sugar-toolkit-gtk3.git",
+        "repo": "https://github.com/curiousguy13/sugar-toolkit-gtk3.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "has_checks": true,
         "name": "sugar",
-        "repo": "https://github.com/sugarlabs/sugar.git",
+        "repo": "https://github.com/curiousguy13/sugar.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "name": "sugar-artwork",
-        "repo": "https://github.com/sugarlabs/sugar-artwork.git",
+        "repo": "https://github.com/curiousguy13/sugar-artwork.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "name": "sugar-datastore",
-        "repo": "https://github.com/sugarlabs/sugar-datastore.git",
+        "repo": "https://github.com/curiousguy13/sugar-datastore.git",
         "clean_stamp": 1
     },
     {
         "dist": true,
         "has_checks": true,
         "name": "sugar-runner",
-        "repo": "https://github.com/sugarlabs/sugar-runner.git",
+        "repo": "https://github.com/curiousguy13/sugar-runner.git",
         "clean_stamp": 1
     }
 ]
