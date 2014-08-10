@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.3
 # Copyright 2013 Daniel Narvaez
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -158,7 +158,7 @@ def create_virtualenv():
         with tarfile.open(fileobj=buffer, mode="r:gz") as tar:
             tar.extractall(get_cache_dir())
 
-    subprocess.check_call(["python2.7",
+    subprocess.check_call(["python3.3",
                            os.path.join(source_dir, "virtualenv.py"),
                            "-q", "--system-site-packages",
                            get_virtualenv_dir()])
@@ -290,8 +290,9 @@ def setup(command):
             create_virtualenv()
 
             print("* Install python packages")
-
-            packages = ["git+https://github.com/dnarvaez/osbuild"]
+            
+            packages = ["git+https://github.com/curiousguy13/osbuild"]
+            packages.append("git+https://github.com/curiousguy13/plog")
             if mode == MODE_HOST:
                 packages.append("git+https://github.com/dnarvaez/broot")
             else:
@@ -300,6 +301,7 @@ def setup(command):
             args = [get_bin_path("pip"), "-q", "install"]
             args.extend(packages)
             subprocess.check_call(args)
+            
         except Exception, e:
             delete_virtualenv()
             raise e
@@ -376,7 +378,7 @@ def run_command(command, args):
 
         return broot_run(broot_args, broot_message_args)
     else:
-        command_args = [get_bin_path("python2.7"), command_path]
+        command_args = [get_bin_path("python3.3"), command_path]
         if args:
             command_args.extend(args)
 
