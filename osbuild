@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.3
+#!/usr/bin/env python3
 # Copyright 2013 Daniel Narvaez
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,11 +22,14 @@ import shutil
 import subprocess
 import sys
 import tarfile
-import urllib.request, urllib.error, urllib.parse
+try:
+    import urllib2
+except:
+    import urllib.request
 import io
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-virtualenv_version = "1.11.6"
+virtualenv_version = "1.11.4"
 broot_dir = "build"
 commands_dir = os.path.join("build", "commands")
 main_repo = "sugarlabs/sugar-build"
@@ -146,7 +149,6 @@ def get_bin_path(name=None):
 
 
 def create_virtualenv():
-    print("%poop:osbuild/create_virtualenv")
     source_dir = os.path.join(get_cache_dir(),
                               "virtualenv-%s" % virtualenv_version)
 
@@ -159,11 +161,10 @@ def create_virtualenv():
         with tarfile.open(fileobj=buffer, mode="r:gz") as tar:
             tar.extractall(get_cache_dir())
 
-    print(get_virtualenv_dir())
     subprocess.check_call(["python3.3",
                            os.path.join(source_dir, "virtualenv.py"),
                            "-q", "--system-site-packages",
-                            get_virtualenv_dir()])
+                           get_virtualenv_dir()])
 
 
 def install_system_deps():
@@ -216,7 +217,6 @@ def broot_check_output(args):
 
 
 def broot_run(args, message_args=None):
-    print("%poop:osbuild/broot_run")
     if "XAUTHORITY" not in os.environ:
         os.environ["XAUTHORITY"] = os.path.expanduser("~/.Xauthority")
 
@@ -237,12 +237,11 @@ def broot_run(args, message_args=None):
         message_args = args
 
     print("\n$ sudo broot %s" % " ".join(message_args))
-    print("%poop:osbuild/broot_run: broot_args:",broot_args)
+
     return subprocess.call(broot_args) == 0
 
 
 def clean():
-    print("%poop:osbuild/clean")
     mode = get_mode()
 
     try:
@@ -274,9 +273,8 @@ def broot_state():
 
 
 def setup(command):
-    print("%poop:osbuild/setup1")
     mode = get_mode()
-    print("%poop:osbuild/setup2")
+
     full_pull = command == "pull" and is_full_pull()
     build_virtualenv = not get_virtualenv_exists() or full_pull
 
@@ -286,7 +284,7 @@ def setup(command):
                         MODE_BROOT: "broot build system"}
 
         print("\n= Setup the %s =\n" % build_system[mode])
-    print("%poop:osbuild/setup3")
+
     if build_virtualenv:
         delete_virtualenv()
 
@@ -309,13 +307,13 @@ def setup(command):
         except Exception as e:
             delete_virtualenv()
             raise e
-    print("%poop:osbuild/setup4")
+
     if full_pull and not is_buildbot():
         print("* Pull latest sugar-build")
 
         os.chdir(get_base_dir())
         subprocess.check_call(["git", "pull", "--ff-only", "-q"])
-    print("%poop:osbuild/setup5")
+
     if full_pull:
         if mode == MODE_NONE:
             install_system_deps()
@@ -323,11 +321,11 @@ def setup(command):
             print("* Setup the build root")
             if not broot_run(["setup"]):
                 return False
-    print("%poop:osbuild/setup6")
+
     # When we run the broot osbuild the virtualenv will be updated
     if get_mode() == MODE_HOST and command == "pull":
         delete_virtualenv(MODE_BROOT)
-    print("%poop:osbuild/setup7")
+
     return True
 
 def get_available_commands():
@@ -362,43 +360,35 @@ def get_command_path(command, commands_group):
 
 
 def run_command(command, args):
-    print("%poop:osbuild/run_command1")
     if command == "broot":
         return broot_run(args)
 
     command_path = get_command_path(command, "host")
-    print("%poop:osbuild/run_command2")
     if command_path is None:
         is_broot_command = True
         command_path = get_command_path(command, "broot")
     else:
         is_broot_command = False
-    print("%poop:osbuild/run_command3")
+
     if get_mode() == MODE_HOST and is_broot_command:
-        print("%poop:osbuild/run_command1")
         broot_args = ["run", "/home/broot/sugar-build/osbuild", command]
         broot_message_args = ["run", "osbuild", command]
 
         if args:
-            print("%poop:osbuild/run_command4")
             broot_args.extend(args)
             broot_message_args.extend(args)
 
-        print("%poop:osbuild/run_command5")
         return broot_run(broot_args, broot_message_args)
-        print("%poop:osbuild/run_command6")
     else:
-        command_args = [get_bin_path("python3.3"), '-u', command_path]
+        command_args = [get_bin_path("python3.3"), command_path]
         if args:
             command_args.extend(args)
-        print("%poop:osbuild/run_command7")
+
         os.environ["PYTHONPATH"] = get_commands_dir()
         os.environ["PATH"] = os.path.expandvars("%s:$PATH" % get_bin_path())
         os.environ["PYTHONUNBUFFERED"] = "yes"
-        print("%poop:osbuild/run_command8:command_args=",command_args)
-        command=subprocess.call(command_args) == 0
-        print("%poop:osbuild/run_command9:command=",command)
-        return command
+
+        return subprocess.call(command_args) == 0
 
 
 def check_lock():
@@ -456,7 +446,7 @@ def parse_known_args():
 
 def main():
     # Unbuffered stdout
-    #sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
+    #sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
     if os.geteuid() == 0:
         print("osbuild should not be run as root.")
