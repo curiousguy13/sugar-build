@@ -301,7 +301,7 @@ def setup(command):
             else:
                 packages.append("git+https://github.com/curiousguy13/sourcestamp")
 
-            args = [get_bin_path("pip"), "-q", "install"]
+            args = [get_bin_path("pip3"), "-q", "install"]
             args.extend(packages)
             subprocess.check_call(args)
         except Exception as e:
