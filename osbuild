@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # Copyright 2013 Daniel Narvaez
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,7 +156,10 @@ def create_virtualenv():
         url = "https://pypi.python.org/packages/source/v/" \
               "virtualenv/virtualenv-%s.tar.gz" % virtualenv_version
 
-        f = urllib.request.urlopen(url)
+        try:
+            f = urllib2.urlopen(url)
+        except NameError:
+            f = urllib.request.urlopen(url)
         buffer = io.BytesIO(f.read())
         with tarfile.open(fileobj=buffer, mode="r:gz") as tar:
             tar.extractall(get_cache_dir())
@@ -301,7 +304,7 @@ def setup(command):
             else:
                 packages.append("git+https://github.com/curiousguy13/sourcestamp")
 
-            args = [get_bin_path("pip3"), "-q", "install"]
+            args = [get_bin_path("pip"), "-q", "install"]
             args.extend(packages)
             subprocess.check_call(args)
         except Exception as e:
@@ -490,4 +493,4 @@ def main():
 
 if __name__ == "__main__":
     if not main():
-        sys.exit(1)
+        sys.exit(1)																	
